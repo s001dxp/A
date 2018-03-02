@@ -1,0 +1,12 @@
+{
+  "name": "s001dxp/a",
+  "description": "A wrapper for PHP arrays to give it true OOP/functional experience.",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Darryl Porter",
+      "email": "dlporter98@gmail.com"
+    }
+  ]
+}
