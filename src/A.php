@@ -21,7 +21,7 @@ class A
 	{
 		if(count(func_get_args()) === 2)
 		{
-
+			$this->array[$key] = $value;
 		}
 	}
 
