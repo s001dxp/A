@@ -173,9 +173,11 @@ class A implements \ArrayAccess, \Iterator, \Countable
 
 	public function random($howMany)
 	{
-//		$value = array_rand($this->array, $howMany);
-//		$arr = new self(is_array($value) ? $value : [$value]);
-//		return $this->map
+		$value = array_rand($this->array, $howMany);
+		$arr = new self(is_array($value) ? $value : [$value]);
+		return $arr->map(function($val){
+			return $this[$val];
+		});
 	}
 
 	public function reduce()
