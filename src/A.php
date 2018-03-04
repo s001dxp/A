@@ -286,10 +286,6 @@ class A implements \ArrayAccess, \Iterator, \Countable
 	{
 	}
 
-	public function compact()
-	{
-	}
-
 	public function count()
 	{
 		return count($this->array);
@@ -300,8 +296,12 @@ class A implements \ArrayAccess, \Iterator, \Countable
 		return current($this->array);
 	}
 
-	public function each()
+	public function forEach(callable $callback): void
 	{
+		foreach($this->array as $key => $value)
+		{
+			$callback($value, $key);
+		}
 	}
 
 	public function end()
@@ -312,12 +312,9 @@ class A implements \ArrayAccess, \Iterator, \Countable
 	{
 	}
 
-	public function inArray()
+	public function contains($value)
 	{
-	}
-
-	public function keyExistsKeyExists()
-	{
+		return in_array($value, $this->array);
 	}
 
 	public function key()
