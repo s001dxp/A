@@ -180,40 +180,53 @@ class A implements \ArrayAccess, \Iterator, \Countable
 		});
 	}
 
-	public function reduce()
+	public function reduce(callable $callback, $initial = null)
 	{
+		$reduced = array_reduce($this->array, $callback, $initial);
+		return is_array($reduced) ? new self($reduced) : $reduced;
 	}
 
-	public function replaceRecursive()
+	public function replaceRecursive(array $array, ...$moreArrays)
 	{
+		return new self(array_replace_recursive($this->array, $array, ...$moreArrays));
 	}
 
-	public function replace()
+	public function replace(array $array, ...$moreArrays)
 	{
+		return new self(array_replace($this->array, $array, ...$moreArrays));
 	}
 
 	public function reverse()
 	{
+		return new self(array_reverse($this->array));
 	}
 
-	public function search()
+	public function search($needle)
 	{
+		return array_search($needle, $this->array);
 	}
 
 	public function shift()
 	{
+
 	}
 
-	public function slice()
+	public function slice(int $offset, int $length = NULL, bool $preserve_keys = FALSE)
 	{
+		return new self(array_slice($this->array, $offset, $length, $preserve_keys));
 	}
 
-	public function splice()
+	public function splice(int $offset, int $length = null, $replacement = [])
 	{
+		$copy = $this->array;
+		$length = $length ?? count($copy);
+		array_splice($copy, $offset, $length, $replacement);
+		return new self($copy);
 	}
 
 	public function sum()
 	{
+		return array_sum($this->array);
 	}
 
 	public function udiffAssoc()
@@ -240,16 +253,21 @@ class A implements \ArrayAccess, \Iterator, \Countable
 	{
 	}
 
-	public function unique()
+	public function unique(int $sort_flags = SORT_STRING)
 	{
+		return new self(array_unique($this->array, $sort_flags));
 	}
 
-	public function unshift()
+	public function unshift(...$moreValues)
 	{
+		$copy = $this->array;
+		array_unshift($copy, ...$moreValues);
+		return new self($copy);
 	}
 
 	public function values()
 	{
+		return new self(array_values($this->array));
 	}
 
 	public function walkRecursive()
