@@ -17,6 +17,16 @@ class ATest extends TestCase
 		return ['a' => 'Neo', 'b' => 'Morpheus', 'c' => 'Trinity', 'd' => 'Smith', 'e' => 'Cypher', 'f' => 'Persephone'];
 	}
 
+	public function assocMultiDimArrayProvider()
+	{
+		return [
+			['a' => 'Neo', 'b' => 'Morpheus', 'c' => 'Trinity', 'd' => 'Smith', 'e' => 'Cypher', 'f' => 'Persephone'],
+			['a' => 'Neo', 'b' => 'Morpheus', 'c' => 'Trinity', 'd' => 'Smith', 'e' => 'Cypher', 'f' => 'Persephone'],
+			['a' => 'Neo', 'b' => 'Morpheus', 'c' => 'Trinity', 'd' => 'Smith', 'e' => 'Cypher', 'f' => 'Persephone'],
+			['a' => 'Neo', 'b' => 'Morpheus', 'c' => 'Trinity', 'd' => 'Smith', 'e' => 'Cypher', 'f' => 'Persephone'],
+		];
+	}
+
 	public function getAObjectAssoc()
 	{
 		return A::array($this->assocArrayProvider());
