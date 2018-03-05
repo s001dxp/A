@@ -11,9 +11,40 @@ class A implements \ArrayAccess, \Iterator, \Countable
 		$this->array = $array;
 	}
 
-	public static function array(array $array)
+	public static function array(array $array = [])
 	{
 		return new self($array);
+	}
+
+	/**
+	 * @param array|\ArrayAccess $array
+	 * @return array
+	 * @throws \InvalidArgumentException
+	 */
+	private function convertArray(...$array)
+	{
+		$retVal = [];
+		foreach($array as $val)
+		{
+			if(is_array($val))
+			{
+				$retVal[] = $array;
+			}
+			elseif($val instanceof A)
+			{
+				$retVal[] = $val->getArray();
+			}
+			else
+			{
+				throw new \InvalidArgumentException('convertArray function only accepts an array or an instance of A.');
+			}
+		}
+		return $retVal;
+	}
+
+	public function getArray()
+	{
+		return $this->array;
 	}
 
 	public function changeKeyCase($case = CASE_LOWER)
@@ -33,13 +64,15 @@ class A implements \ArrayAccess, \Iterator, \Countable
 		return new self(array_column($this->array, $column));
 	}
 
-	public function combineLeft(array $array)
+	public function combineLeft($array)
 	{
+		$array = $this->convertArray($array);
 		return new self(array_combine($array, $this->array));
 	}
 
-	public function combineRight(array $array)
+	public function combineRight($array)
 	{
+		$array = $this->convertArray($array);
 		return new self(array_combine($this->array, $array));
 	}
 
@@ -48,23 +81,27 @@ class A implements \ArrayAccess, \Iterator, \Countable
 		return new self(array_count_values($this->array));
 	}
 
-	public function diffAssoc(array $array, ...$otherArrays)
+	public function diffAssoc($array, ...$otherArrays)
 	{
-		return new self(array_diff_assoc($this->array, $array, ...$otherArrays));
+		$array = $this->convertArray($array, ...$otherArrays);
+		return new self(array_diff_assoc($this->array, ...$array));
 	}
 
-	public function diffKey(array $array, ...$otherArrays)
+	public function diffKey($array, ...$otherArrays)
 	{
-		return new self(array_diff_key($this->array, $array, ...$otherArrays));
+		$array = $this->convertArray($array, ...$otherArrays);
+		return new self(array_diff_key($this->array, ...$array));
 	}
 
-	public function diffUAssoc(array $array, callable $callback)
+	public function diffUAssoc($array, callable $callback)
 	{
+		$array = $this->convertArray($array);
 		return new self(array_diff_uassoc($this->array, $array, $callback));
 	}
 
-	public function diffUKey(array $array, callable $callback)
+	public function diffUKey($array, callable $callback)
 	{
+		$array = $this->convertArray($array);
 		return new self(array_diff_ukey($this->array, $array, $callback));
 	}
 
@@ -73,8 +110,9 @@ class A implements \ArrayAccess, \Iterator, \Countable
 	 * @param array ...$otherArrays
 	 * @return A
 	 */
-	public function diff(array $array, ...$otherArrays)
+	public function diff($array, ...$otherArrays)
 	{
+		$array = $this->convertArray($array);
 		return new self(array_diff($this->array, $array, ...$otherArrays));
 	}
 
@@ -88,28 +126,33 @@ class A implements \ArrayAccess, \Iterator, \Countable
 		return new self(array_flip($this->array));
 	}
 
-	public function intersectAssoc(array $array, ...$otherArrays)
+	public function intersectAssoc($array, ...$otherArrays)
 	{
+		$array = $this->convertArray($array);
 		return new self(array_intersect_assoc($this->array, $array, ...$otherArrays));
 	}
 
-	public function intersectKey(array $array, ...$otherArrays)
+	public function intersectKey($array, ...$otherArrays)
 	{
+		$array = $this->convertArray($array);
 		return new self(array_intersect_key($this->array, $array, ...$otherArrays));
 	}
 
-	public function intersectUAssoc(array $array, callable $callback)
+	public function intersectUAssoc($array, callable $callback)
 	{
+		$array = $this->convertArray($array);
 		return new self(array_intersect_uassoc($this->array, $array, $callback));
 	}
 
-	public function intersectUKey(array $array, callable $callback)
+	public function intersectUKey($array, callable $callback)
 	{
+		$array = $this->convertArray($array);
 		return new self(array_intersect_ukey($this->array, $array, $callback));
 	}
 
-	public function intersect(array $array, ...$otherArrays)
+	public function intersect($array, ...$otherArrays)
 	{
+		$array = $this->convertArray($array);
 		return new self(array_intersect($this->array, $array, ...$otherArrays));
 	}
 
@@ -133,13 +176,15 @@ class A implements \ArrayAccess, \Iterator, \Countable
 		return new self(array_map($callback, $this->array));
 	}
 
-	public function mergeRecursive(array $array)
+	public function mergeRecursive($array)
 	{
+		$array = $this->convertArray($array);
 		return new self(array_merge_recursive($this->array, $array));
 	}
 
-	public function merge(array $array)
+	public function merge($array)
 	{
+		$array = $this->convertArray($array);
 		return new self(array_merge($this->array, $array));
 	}
 
@@ -186,13 +231,15 @@ class A implements \ArrayAccess, \Iterator, \Countable
 		return is_array($reduced) ? new self($reduced) : $reduced;
 	}
 
-	public function replaceRecursive(array $array, ...$moreArrays)
+	public function replaceRecursive($array, ...$moreArrays)
 	{
+		$array = $this->convertArray($array);
 		return new self(array_replace_recursive($this->array, $array, ...$moreArrays));
 	}
 
-	public function replace(array $array, ...$moreArrays)
+	public function replace($array, ...$moreArrays)
 	{
+		$array = $this->convertArray($array);
 		return new self(array_replace($this->array, $array, ...$moreArrays));
 	}
 
