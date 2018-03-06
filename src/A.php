@@ -39,7 +39,7 @@ class A implements \ArrayAccess, \Iterator, \Countable
 		{
 			if(is_array($val))
 			{
-				$retVal[] = $array;
+				$retVal[] = $val;
 			}
 			elseif($val instanceof A)
 			{

@@ -12,6 +12,11 @@ class ATest extends TestCase
 		return ['a', 'b', 'c', 'd', 'e', 'f'];
 	}
 
+	public function numberedArray2Provider()
+	{
+		return ['a', 'b', 'c', 'x', 'y', 'z'];
+	}
+
 	public function assocArrayProvider()
 	{
 		return ['a' => 'Neo', 'b' => 'Morpheus', 'c' => 'Trinity', 'd' => 'Smith', 'e' => 'Cypher', 'f' => 'Persephone'];
@@ -144,37 +149,75 @@ class ATest extends TestCase
 			$c->getArray()
 		);
 	}
-/*
-	public function testCountValues()
-	{
-
-	}
-
-	public function testDiffAssoc()
-	{
-
-	}
-
-	public function testDiffKey()
-	{
-
-	}
-
-	public function testDiffUAssoc()
-	{
-
-	}
-
-	public function testDiffUKey()
-	{
-
-	}
 
 	public function testDiff()
 	{
+		$a = $this->getAObjectNumerical();
+		$b = A::array($this->numberedArray2Provider());
 
+		$c = $a->diff($b);
+		$this->assertEquals(\array_values(['d','e','f']), \array_values($c->getArray()));
+
+		$d = $a->diff($this->numberedArray2Provider());
+		$this->assertEquals(\array_values(['d','e','f']), \array_values($d->getArray()));
+
+		$e = A::array(['f']);
+		$f = $a->diff($b, $e);
+		$this->assertEquals(\array_values(['d','e']), \array_values($f->getArray()));
+
+		$h = $a->diff($b, ['f']);
+		$this->assertEquals(\array_values(['d','e']), \array_values($h->getArray()));
 	}
 
+	public function testIntersect()
+	{
+		$a = $this->getAObjectNumerical();
+		$b = A::array($this->numberedArray2Provider());
+
+		$c = $a->intersect($b);
+		$this->assertEquals(\array_values(['a','b','c']), \array_values($c->getArray()));
+
+		$d = $a->intersect($this->numberedArray2Provider());
+		$this->assertEquals(\array_values(['a','b','c']), \array_values($d->getArray()));
+
+		$e = A::array(['f']);
+		$f = $a->intersect($b, $e);
+		$this->assertEquals(\array_values([]), \array_values($f->getArray()));
+
+		$h = $a->intersect($b, ['b']);
+		$this->assertEquals(\array_values(['b']), \array_values($h->getArray()));
+	}
+
+	public function testAIterator()
+	{
+		$a = $this->getAObjectAssoc();
+		$b = $this->assocArrayProvider();
+
+		$c = [];
+		foreach($a as $key => $val)
+		{
+			$c[$key] = $val;
+		}
+		$this->assertEquals($b, $c);
+	}
+
+	public function testArrayAccess()
+	{
+		$a = $this->getAObjectAssoc();
+		$c = $this->assocArrayProvider();
+		$c['g'] = 'The Oracle';
+		$a['g'] = 'The Oracle';
+		$this->assertEquals($c, $a->getArray());
+		$this->assertEquals('Neo', $a['a']);
+
+		$b = $this->getAObjectNumerical();
+		$d = $this->numberedArrayProvider();
+		$d[] = 'g';
+		$b[] = 'g';
+		$this->assertEquals($d, $b->getArray());
+		$this->assertEquals('a', $b[0]);
+	}
+/*
 	public function testFilter()
 	{
 
@@ -205,10 +248,6 @@ class ATest extends TestCase
 
 	}
 
-	public function testIntersect()
-	{
-
-	}
 
 	public function testKeyExists()
 	{
