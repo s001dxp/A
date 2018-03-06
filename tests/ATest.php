@@ -32,6 +32,11 @@ class ATest extends TestCase
 		return A::array($this->assocArrayProvider());
 	}
 
+	public function getAObjectMultiAssoc()
+	{
+		return A::array($this->assocMultiDimArrayProvider());
+	}
+
 	public function getAObjectNumerical()
 	{
 		return A::array($this->numberedArrayProvider());
@@ -77,27 +82,69 @@ class ATest extends TestCase
 		$c = $b->changeKeyCase();
 		$this->assertEquals(\array_keys($c->getArray()), \array_keys($this->assocArrayProvider()));
 	}
-/*
+
 	public function testChunk()
 	{
+		$a = $this->getAObjectNumerical();
+		$b = $a->chunk(2);
+
+		$arr = $this->numberedArrayProvider();
+		$i = 0;
+		$this->assertCount(3, $b->getArray());
+		$b->forEach(function(A $v) use ($arr, &$i) {
+			$this->assertCount(2, $v->getArray());
+
+			$v->forEach(function($v) use ($arr, &$i) {
+				$this->assertEquals($arr[$i], $v);
+				$i++;
+			});
+		});
 
 	}
 
 	public function testColumn()
 	{
+		$a = $this->getAObjectMultiAssoc();
+		$b = $a->column('b');
 
+		$this->assertCount(4, $b);
+		$b->forEach(function($v){
+			$this->assertEquals('Morpheus', $v);
+		});
+
+		$this->assertEquals(4, $a->column('b')->count());
 	}
 
 	public function testCombineLeft()
 	{
+		$a = $this->getAObjectNumerical();
+		$b = $this->getAObjectAssoc();
+		$c = $a->combineLeft($b);
 
+		$this->assertEquals(
+			\array_combine(
+				\array_values($this->assocArrayProvider()),
+				\array_values($this->numberedArrayProvider())
+			),
+			$c->getArray()
+		);
 	}
 
 	public function testCombineRight()
 	{
+		$a = $this->getAObjectAssoc();
+		$b = $this->getAObjectNumerical();
+		$c = $a->combineRight($b);
 
+		$this->assertEquals(
+			\array_combine(
+				\array_values($this->assocArrayProvider()),
+				\array_values($this->numberedArrayProvider())
+			),
+			$c->getArray()
+		);
 	}
-
+/*
 	public function testCountValues()
 	{
 
