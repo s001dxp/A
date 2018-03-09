@@ -217,12 +217,21 @@ class ATest extends TestCase
 		$this->assertEquals($d, $b->getArray());
 		$this->assertEquals('a', $b[0]);
 	}
-/*
+
 	public function testFilter()
 	{
+		$a = $this->getAObjectAssoc();
+		$b = $a->filter(function($val, $key){
+			return $val === 'Cypher';
+		});
+		$this->assertEquals(['e' => 'Cypher'], $b->getArray());
 
+		$c = $a->filter(function($val, $key){
+			return $key === 'a';
+		});
+		$this->assertEquals(['a' => 'Neo'], $c->getArray());
 	}
-
+/*
 	public function testFlip()
 	{
 

@@ -132,6 +132,12 @@ class A implements \ArrayAccess, \Iterator, \Countable
 		return new self(array_filter($this->array, $callback, ARRAY_FILTER_USE_BOTH));
 	}
 
+	public function first()
+	{
+		list($first) = $this->array;
+		return $first;
+	}
+
 	public function flip()
 	{
 		return new self(array_flip($this->array));
@@ -180,6 +186,11 @@ class A implements \ArrayAccess, \Iterator, \Countable
 	public function keys()
 	{
 		return new self(array_keys($this->array));
+	}
+
+	public function last()
+	{
+		return array_values(array_slice($this->array, -1))[0];
 	}
 
 	public function map(callable $callback)
