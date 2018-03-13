@@ -134,8 +134,8 @@ class A implements \ArrayAccess, \Iterator, \Countable
 
 	public function first()
 	{
-		list($first) = $this->array;
-		return $first;
+		$a = array_reverse($this->array);
+		return array_pop($a);
 	}
 
 	public function flip()

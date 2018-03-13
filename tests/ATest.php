@@ -231,6 +231,22 @@ class ATest extends TestCase
 		});
 		$this->assertEquals(['a' => 'Neo'], $c->getArray());
 	}
+
+	public function testFirst()
+	{
+		$a = $this->getAObjectAssoc();
+		$this->assertEquals('Neo', $a->first());
+
+		$b = $this->getAObjectNumerical();
+		$this->assertEquals('a', $b->first());
+
+		$c = $this->getAObjectMultiAssoc();
+		$this->assertEquals(
+			['a' => 'Neo', 'b' => 'Morpheus', 'c' => 'Trinity', 'd' => 'Smith', 'e' => 'Cypher', 'f' => 'Persephone'],
+			$c->first()
+		);
+		$this->assertEquals('Neo', $c->first()->first());
+	}
 /*
 	public function testFlip()
 	{
