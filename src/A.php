@@ -600,9 +600,28 @@ class A implements \ArrayAccess, \Iterator, \Countable
 	 */
 	public function forEach(callable $callback): void
 	{
+		$count = $this->count();
+		$helpers = [];
+		$helpers['iter0'] = 0;
+		$helpers['iter'] = 1;
+		$helpers['revIter0'] = $count - 1;
+		$helpers['revIter'] = $count;
+		$helpers['length'] = $count;
+		$helpers['isFirst'] = true;
+		$helpers['isLast'] (1 === $count);
+		$helpers['lastValue'] = null;
+		$helpers['lastKey'] = null;
 		foreach($this->array as $key => $value)
 		{
-			$callback($value, $key);
+			$callback($value, $key, $helpers);
+			$helpers['isFirst'] = false;
+			++$helpers['iter0'];
+			++$helpers['iter'];
+			--$helpers['revIter0'];
+			--$helpers['revIter'];
+			$helpers['isLast'] = (1 === $helpers['revIter']);
+			$helpers['lastValue'] = $value;
+			$helpers['lastKey'] = $key;
 		}
 	}
 
