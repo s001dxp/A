@@ -853,4 +853,9 @@ class A implements \ArrayAccess, \Iterator, \Countable
 	{
 		unset($this->array[$offset]);
 	}
+
+	public function __toString()
+	{
+		return (string)print_r($this->array, true);
+	}
 }
