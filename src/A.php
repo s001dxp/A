@@ -608,7 +608,7 @@ class A implements \ArrayAccess, \Iterator, \Countable
 		$helpers['revIter'] = $count;
 		$helpers['length'] = $count;
 		$helpers['isFirst'] = true;
-		$helpers['isLast'] (1 === $count);
+		$helpers['isLast'] = (1 === $count);
 		$helpers['lastValue'] = null;
 		$helpers['lastKey'] = null;
 		foreach($this->array as $key => $value)
