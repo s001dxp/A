@@ -596,23 +596,31 @@ class A implements \ArrayAccess, \Iterator, \Countable
 	}
 
 	/**
-	 * @param callable $callback
+	 * @param callable 		$callback
+	 * @param int|string    $track The key of the item in the array in the second dimension.
+	 * 								If track is set, a key "changed" will be set to true in the helpers array.
+	 * 								It will be true if the value has changed since the last iteration, false otherwise.
 	 */
-	public function forEach(callable $callback): void
+	public function forEach(callable $callback, $track = null): void
 	{
 		$count = $this->count();
-		$helpers = [];
-		$helpers['iter0'] = 0;
-		$helpers['iter'] = 1;
-		$helpers['revIter0'] = $count - 1;
-		$helpers['revIter'] = $count;
-		$helpers['length'] = $count;
-		$helpers['isFirst'] = true;
-		$helpers['isLast'] = (1 === $count);
-		$helpers['lastValue'] = null;
-		$helpers['lastKey'] = null;
+		$helpers = [
+			'iter0' => 0,
+			'iter' => 1,
+			'revIter0' => $count - 1,
+			'revIter' => $count,
+			'length' => $count,
+			'isFirst' => true,
+			'isLast' => (1 === $count),
+			'lastValue' => null,
+			'lastKey' => null,
+		];
 		foreach($this->array as $key => $value)
 		{
+			if(\is_array($value) && $track !== null)
+			{
+				$helpers['changed'] = !(isset($helpers['lastValue'][$track]) && $value[$track] === $helpers['lastValue'][$track]);
+			}
 			$callback($value, $key, $helpers);
 			$helpers['isFirst'] = false;
 			++$helpers['iter0'];
